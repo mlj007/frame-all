@@ -9,13 +9,13 @@
             <value>com.mysql.jdbc.Driver</value>
         </property>
         <property name="url">
-            <value>jdbc:mysql://10.0.0.46:3306/dbdealersshop?useUnicode=true&amp;characterEncoding=UTF-8</value>
+            <value>jdbc:mysql://10.0.0.46:3306/sms?useUnicode=true&amp;characterEncoding=UTF-8</value>
         </property>
         <property name="username">
-            <value>dbdealersshop</value>
+            <value>sms</value>
         </property>
         <property name="password">
-            <value>chexundbdealersshop</value>
+            <value>chexunsms</value>
         </property>
         <property name="maxActive">
             <value>10</value>
@@ -38,7 +38,7 @@
                  -->
                 <entry key="permission">
                       <list>
-						<value>permission_user</value>
+						<value>send_info</value>
                       </list>                      
                 </entry>
             </map>
@@ -48,7 +48,7 @@
     <bean id="myBatisGenService" class="com.chexun.generation.gain.MybatisGenService">
         <property name="dataSource" ref="dataSource"/>
         <property name="tableNSMap" ref="tableNSMap"/>
-        <property name="packageName" value="com/chexun/dealer"/>
+        <property name="packageName" value="com/chexun/sms"/>
         <property name="ibatisFileDir" value="mybatis"/>
         <property name="preOrSu" value="0"/><!--表名称是否有加前后缀，-1：前缀，0：无前后缀，1：后缀，2：前后缀-->
         <property name="separator" value="_"/><!--分隔符-->
