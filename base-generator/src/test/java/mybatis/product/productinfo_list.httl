@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>车讯伙伴</title>
+<link type="text/css" href="/statics/css/style.css" rel="stylesheet" />
+<script type="text/javascript" src="/statics/js/jq.js"></script>
+<script type="text/javascript" src="/statics/js/public.js"></script>
+<!--#var(com.mlj.ecbiz.model.product.ProductInfo query)-->
+<!--#set(PageEntity page)-->
+<script>
+$(function(){
+	$('.i-2').click(function(){
+		$('.pop2').show()
+		$('#bg').show()
+	})
+	$('.off').click(function(){
+		$('.pop2').hide()
+		$('#bg').hide()
+	})
+})
+	
+$(function(){
+	$('.i-8').click(function(){
+		openAddDialog();
+	})
+	$('.off').click(function(){
+		$('.pop15').hide()
+		$('#bg').hide()
+	})
+})
+
+$(function(){
+	$('.i-10').click(function(){
+		openEditDialog();
+	})
+	$('.off').click(function(){
+		$('.pop15').hide()
+		$('#bg').hide()
+	})
+})
+
+function getSelectObjId(){
+	return $('.cur').attr('oid');
+}
+
+//搜索
+function search(){
+	$("#pageCurrentPage").val(1);
+	$("#searchForm").submit();
+}
+
+//新增
+function openAddDialog(){
+	$('#editDialogTitle').html('信息管理-添加');
+	$('#id').val(null);
+	$('#dictName').val(null);
+	$('#description').val(null);
+	//$('#dictType').val(null);
+	$('#status').val('0');
+	$('.pop15').show();
+	$('#bg').show();
+}
+
+//编辑
+function openEditDialog(){
+	var oid = getSelectObjId();
+	if(oid == null || oid == ''){
+		alert("请选择要修改的记录");
+		return false;
+	}
+	$('#editDialogTitle').html('信息管理-编辑');
+	var params = {
+		id:oid
+	};
+	$.get("/manage/product/productinfo/edit",params,function(data){
+		if(data != null){
+			$('#id').val(data.id);
+			$('#dictName').val(data.dictName);
+			$('#description').val(data.description);
+			$('#dictType').val(data.dictType);
+			$('#status').val(data.status + "");
+			$('.pop15').show();
+			$('#bg').show();
+		}
+	});
+}
+
+//新增、修改保存
+function saveSubmit(){
+	var params = $('#editForm').serialize();
+	var url;
+	var vid = $('#id').val();
+	if(vid != null && vid != ''){
+		url = "/manage/product/productinfo/edit";
+	}else{
+		url = "/manage/product/productinfo/add";
+	}
+	$.post(url,params,function(data){
+		if(data != null && data.ret == 1){
+			$('.pop15').hide();
+			$('#bg').hide();
+			$("#searchForm").submit();
+		}else {
+			alert('保存失败');
+		}
+	});
+}
+</script>
+</head>
+<body>
+    <div id="bg"></div>
+    <div class="right">
+        <div class="special">
+            <div class="special-hd">
+                <h3>XX维护管理</h3>
+            </div>
+        </div>
+        <div class="right-box" id="tab">
+            <ul class="icon clearfix">
+            	<li class="i-2"><span></span>查询</li>
+                <li class="i-8"><span></span>新增</li>
+                <li class="i-10"><span></span>编辑</li>
+            </ul>
+            <!--END 右边icon-->
+            
+            <form action="/manage/product/productinfo/list" method="post" id="searchForm">
+            <input type="hidden" id="pageCurrentPage" name="page.currentPage" value="${page.currentPage}"/>
+            <div class="icon-pop pop2" style="width:280px;">
+                <div class="icon-pop-hd clearfix">
+                    <h3>查询</h3>
+                    <a href="javascript:;" class="off"><img src="/statics/images/off.jpg" /></a></div>
+                <div class="icon-pop-bd">
+                    <p>
+                        <span class="fl" style="width:30px;">名称</span>
+                        <input name="name" value="" type="text" style="margin:0 0 0 5px; width:180px"/>
+                    </p>
+                    <p>
+                        <span class="fl" style="width:30px;">类型</span>
+	                        <select name="dictType" id="ad_position" style="margin:0 0 0 5px; width:150px">
+	    						<option value=""> --全部--</option>
+	    				</select>
+                    </p>
+                    <p class="clearfix tc" style="padding:10px 5px;"><a href="javascript:search();">查询</a></p>
+                </div>
+            </div>
+            </form>
+            <!--END 查询弹出层-->
+            
+            <form id="editForm"> 
+            <input name="id" id="id" type="hidden" value=""/>
+            <div class="icon-pop pop15">
+                <div class="icon-pop-hd clearfix">
+                    <h3 id="editDialogTitle">信息-添加</h3>
+                    <a href="javascript:;" class="off"><img src="/statics/images/off.jpg" /></a></div>
+                <div class="icon-pop-bd">
+		    		<p><span class="fl">id</span>
+                        <input name="id" id="id" type="text"/>
+                    </p>
+		    		<p><span class="fl">productName</span>
+                        <input name="productName" id="productName" type="text"/>
+                    </p>
+		    		<p><span class="fl">productSn</span>
+                        <input name="productSn" id="productSn" type="text"/>
+                    </p>
+		    		<p><span class="fl">unit</span>
+                        <input name="unit" id="unit" type="text"/>
+                    </p>
+		    		<p><span class="fl">weight</span>
+                        <input name="weight" id="weight" type="text"/>
+                    </p>
+		    		<p><span class="fl">typeId</span>
+                        <input name="typeId" id="typeId" type="text"/>
+                    </p>
+		    		<p><span class="fl">catId</span>
+                        <input name="catId" id="catId" type="text"/>
+                    </p>
+		    		<p><span class="fl">brandId</span>
+                        <input name="brandId" id="brandId" type="text"/>
+                    </p>
+		    		<p><span class="fl">productNum</span>
+                        <input name="productNum" id="productNum" type="text"/>
+                    </p>
+		    		<p><span class="fl">shopPrice</span>
+                        <input name="shopPrice" id="shopPrice" type="text"/>
+                    </p>
+		    		<p><span class="fl">marketPrice</span>
+                        <input name="marketPrice" id="marketPrice" type="text"/>
+                    </p>
+		    		<p><span class="fl">isOnsale</span>
+                        <input name="isOnsale" id="isOnsale" type="text"/>
+                    </p>
+		    		<p><span class="fl">isShow</span>
+                        <input name="isShow" id="isShow" type="text"/>
+                    </p>
+		    		<p><span class="fl">sortOrder</span>
+                        <input name="sortOrder" id="sortOrder" type="text"/>
+                    </p>
+		    		<p><span class="fl">imgitme</span>
+                        <input name="imgitme" id="imgitme" type="text"/>
+                    </p>
+		    		<p><span class="fl">operator</span>
+                        <input name="operator" id="operator" type="text"/>
+                    </p>
+		    		<p><span class="fl">creatTime</span>
+                        <input name="creatTime" id="creatTime" type="text"/>
+                    </p>
+		    		<p><span class="fl">updateTime</span>
+                        <input name="updateTime" id="updateTime" type="text"/>
+                    </p>
+		    		<p><span class="fl">stock</span>
+                        <input name="stock" id="stock" type="text"/>
+                    </p>
+                        
+                    <p class="clearfix" style="padding:10px 80px;"><a href="javascript:void(0);" onclick="javascript:saveSubmit();">确 定</a></p>
+                </div>
+            </div>
+            </form>
+            <!--END 添加、修改弹出层-->
+           	
+            <div class="con clearfix">
+                <div class="con-bd clearfix">
+                    <div id="tabs-1">
+                        <table  width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+				        		<th>id</th>
+				        		<th>productName</th>
+				        		<th>productSn</th>
+				        		<th>unit</th>
+				        		<th>weight</th>
+				        		<th>typeId</th>
+				        		<th>catId</th>
+				        		<th>brandId</th>
+				        		<th>productNum</th>
+				        		<th>shopPrice</th>
+				        		<th>marketPrice</th>
+				        		<th>isOnsale</th>
+				        		<th>isShow</th>
+				        		<th>sortOrder</th>
+				        		<th>imgitme</th>
+				        		<th>operator</th>
+				        		<th>creatTime</th>
+				        		<th>updateTime</th>
+				        		<th>stock</th>
+				        		<th>状态</th>
+                            </tr>
+                            <!--#for(com.mlj.ecbiz.model.product.ProductInfo productInfo : productInfoList)-->
+                            <tr oid="${productInfo.id }">
+			        			<td>${productInfo.id }</td>
+			        			<td>${productInfo.productName }</td>
+			        			<td>${productInfo.productSn }</td>
+			        			<td>${productInfo.unit }</td>
+			        			<td>${productInfo.weight }</td>
+			        			<td>${productInfo.typeId }</td>
+			        			<td>${productInfo.catId }</td>
+			        			<td>${productInfo.brandId }</td>
+			        			<td>${productInfo.productNum }</td>
+			        			<td>${productInfo.shopPrice }</td>
+			        			<td>${productInfo.marketPrice }</td>
+			        			<td>${productInfo.isOnsale }</td>
+			        			<td>${productInfo.isShow }</td>
+			        			<td>${productInfo.sortOrder }</td>
+			        			<td>${productInfo.imgitme }</td>
+			        			<td>${productInfo.operator }</td>
+			        			<td>${productInfo.creatTime }</td>
+			        			<td>${productInfo.updateTime }</td>
+			        			<td>${productInfo.stock }</td>
+				        		<td id="statusName_${productInfo.id }">
+				        			<!--#if(productInfo.status==0)-->启用<!--#else--><span style="color:red;">已禁用</span><!--#end-->
+				        		</td>
+                            </tr>
+                            <!--#end-->
+                        </table>
+                        ${include("/common/page.httl")}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
