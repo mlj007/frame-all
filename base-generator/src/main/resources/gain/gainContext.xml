@@ -36,9 +36,9 @@
                       </list>                      
                 </entry>
                  -->
-                <entry key="product">
+                <entry key="permission">
                       <list>
-						<value>product_info</value>
+						<value>sys_role</value>
                       </list>                      
                 </entry>
             </map>
