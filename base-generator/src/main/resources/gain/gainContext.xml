@@ -38,7 +38,7 @@
                  -->
                 <entry key="permission">
                       <list>
-						<value>sys_role</value>
+						<value>sys_resource</value>
                       </list>                      
                 </entry>
             </map>

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mlj.ecbiz.model.permission.SysResourceMapper">
+ 	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->  
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>  -->
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>   -->
+    <resultMap id="SysResourceResult" type="com.mlj.ecbiz.model.permission.SysResource">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="description" column="description"/>
+        <result property="createTime" column="create_time"/>
+        <result property="state" column="state"/>
+        <result property="otherParentId" column="other_parent_id"/>
+    </resultMap>
+
+    <sql id="sys_resource_columns">
+        sys_resource.id,
+        sys_resource.name,
+        sys_resource.url,
+        sys_resource.parent_id,
+        sys_resource.description,
+        sys_resource.create_time,
+        sys_resource.state,
+        sys_resource.other_parent_id
+    </sql>
+    
+    <sql id="sys_resource_where_conditions">
+    	<trim prefix="where" prefixOverrides="and|or">
+        <if test="id != null">
+        	and id=#{id} 
+        </if>
+        
+        <if test="name != null and name != ''">
+        	and name=#{name} 
+        </if>
+        
+        <if test="url != null and url != ''">
+        	and url=#{url} 
+        </if>
+        <if test="parentId != null">
+        	and parent_id=#{parentId} 
+        </if>
+        
+        <if test="description != null and description != ''">
+        	and description=#{description} 
+        </if>
+        <if test="createTime != null">
+        	and create_time=#{createTime} 
+        </if>
+        <if test="state != null">
+        	and state=#{state} 
+        </if>
+        <if test="otherParentId != null">
+        	and other_parent_id=#{otherParentId} 
+        </if>
+        </trim>
+    </sql>
+    
+    <sql id="sys_resource_set_conditions">
+    	<set>
+        <if test="id != null">
+        	id=#{id},
+        </if>
+        <if test="name != null">
+        	name=#{name},
+        </if>
+        <if test="url != null">
+        	url=#{url},
+        </if>
+        <if test="parentId != null">
+        	parent_id=#{parentId},
+        </if>
+        <if test="description != null">
+        	description=#{description},
+        </if>
+        <if test="createTime != null">
+        	create_time=#{createTime},
+        </if>
+        <if test="state != null">
+        	state=#{state},
+        </if>
+        <if test="otherParentId != null">
+        	other_parent_id=#{otherParentId},
+        </if>
+            id = id
+        </set>
+    </sql>
+
+    <sql id="sys_resource_properties">
+        #{id},
+        #{name},
+        #{url},
+        #{parentId},
+        #{description},
+        #{createTime},
+        #{state},
+        #{otherParentId}
+    </sql>
+
+    <insert id="createSysResource" parameterType="com.mlj.ecbiz.model.permission.SysResource" keyColumn="id" keyProperty="id" useGeneratedKeys="true" >
+        insert INTO sys_resource (<include refid="sys_resource_columns"/>) VALUES (<include refid="sys_resource_properties"/>)
+    </insert>
+	
+	<insert id="insertSysResource" parameterType="com.mlj.ecbiz.model.permission.SysResource" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    	insert into sys_resource
+    	<trim prefix="(" suffix=")" suffixOverrides="," >
+    			<if test="id != null" >
+        			id,
+    			</if>
+    			<if test="name != null" >
+        			name,
+    			</if>
+    			<if test="url != null" >
+        			url,
+    			</if>
+    			<if test="parentId != null" >
+        			parent_id,
+    			</if>
+    			<if test="description != null" >
+        			description,
+    			</if>
+    			<if test="createTime != null" >
+        			create_time,
+    			</if>
+    			<if test="state != null" >
+        			state,
+    			</if>
+    			<if test="otherParentId != null" >
+        			other_parent_id
+    			</if>
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+    			<if test="id != null" >
+        		#{id},
+    		</if>
+    			<if test="name != null" >
+        		#{name},
+    		</if>
+    			<if test="url != null" >
+        		#{url},
+    		</if>
+    			<if test="parentId != null" >
+        		#{parentId},
+    		</if>
+    			<if test="description != null" >
+        		#{description},
+    		</if>
+    			<if test="createTime != null" >
+        		#{createTime},
+    		</if>
+    			<if test="state != null" >
+        		#{state},
+    		</if>
+    			<if test="otherParentId != null" >
+        		#{otherParentId}
+    		</if>
+    	</trim>
+  	</insert>
+	
+    <delete id="deleteSysResourceById" parameterType="Long">
+        delete from sys_resource
+        where
+            		id = #{            			value
+            		}
+    </delete>
+    
+    <delete id="deleteSysResourceByObj" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        delete from sys_resource
+        <include refid="sys_resource_where_conditions"/>
+    </delete>
+    
+  	<delete id="deleteSysResourceByIdList" parameterType="java.util.List">
+    	delete from sys_resource 
+        	where
+            id
+    		IN 
+    		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+    </delete>
+
+    <update id="updateSysResource" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        update sys_resource SET
+            id = #{id},
+            name = #{name},
+            url = #{url},
+            parent_id = #{parentId},
+            description = #{description},
+            create_time = #{createTime},
+            state = #{state},
+            other_parent_id = #{otherParentId}
+        where
+            id = #{id}
+    </update>
+    
+    <update id="updateSysResourceByObj" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        update sys_resource 
+        <include refid="sys_resource_set_conditions"/>
+        where
+            id = #{id}
+    </update>
+    
+    <update id="updateSysResourceByObjAndConditions" parameterType="java.util.HashMap">
+        update sys_resource 
+        <set>
+        <if test="s.id != null">
+        	id=#{s.id},
+        </if>
+        <if test="s.name != null">
+        	name=#{s.name},
+        </if>
+        <if test="s.url != null">
+        	url=#{s.url},
+        </if>
+        <if test="s.parentId != null">
+        	parent_id=#{s.parentId},
+        </if>
+        <if test="s.description != null">
+        	description=#{s.description},
+        </if>
+        <if test="s.createTime != null">
+        	create_time=#{s.createTime},
+        </if>
+        <if test="s.state != null">
+        	state=#{s.state},
+        </if>
+        <if test="s.otherParentId != null">
+        	other_parent_id=#{s.otherParentId},
+        </if>
+        </set>
+        <where>
+        <if test="c.id != null">
+        	id=#{c.id} AND 
+        </if>
+        <if test="c.name != null">
+        	name=#{c.name} AND 
+        </if>
+        <if test="c.url != null">
+        	url=#{c.url} AND 
+        </if>
+        <if test="c.parentId != null">
+        	parent_id=#{c.parentId} AND 
+        </if>
+        <if test="c.description != null">
+        	description=#{c.description} AND 
+        </if>
+        <if test="c.createTime != null">
+        	create_time=#{c.createTime} AND 
+        </if>
+        <if test="c.state != null">
+        	state=#{c.state} AND 
+        </if>
+        <if test="c.otherParentId != null">
+        	other_parent_id=#{c.otherParentId} AND 
+        </if>
+       (status!=2)
+        </where>
+    </update>
+    
+    <update id="batchUpdateSysResource" parameterType="java.util.List">
+		update sys_resource
+		<trim prefix="set" suffixOverrides=",">
+      	 	<trim prefix="id=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.id!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.id}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="name=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.name!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.name}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="url=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.url!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.url}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="parent_id=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.parentId!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.parentId}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="description=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.description!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.description}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="create_time=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.createTime!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.createTime}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="state=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.state!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.state}
+					</if>
+				</foreach>
+			</trim>
+      	 	<trim prefix="other_parent_id=CASE" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					<if test="i.otherParentId!=null">
+						WHEN 
+            			id = #{i.id}
+        				 THEN #{i.otherParentId}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+		where
+		<foreach collection="list" separator="or" item="i" index="index">
+            	(id = #{i.id})
+		</foreach>
+	</update>
+    
+    
+
+    <select id="getSysResourceById" resultMap="SysResourceResult" parameterType="Long">
+        select
+        <include refid="sys_resource_columns"/>
+        from sys_resource
+        where
+            id = #{value}
+    </select>
+    
+    <select id="getSysResourceByObj" resultMap="SysResourceResult" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        select
+        <include refid="sys_resource_columns"/>
+        from sys_resource
+        <include refid="sys_resource_where_conditions"/>
+    </select>
+	
+    
+    <select id="getSysResourceListByObj" resultMap="SysResourceResult"  parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        select
+        <include refid="sys_resource_columns"/>
+        from sys_resource 
+        <include refid="sys_resource_where_conditions"/>
+    </select>
+    
+    <select id="getSysResourceListByMap" resultMap="SysResourceResult"  parameterType="java.util.HashMap">
+        select
+        <include refid="sys_resource_columns"/>
+        from sys_resource 
+        <include refid="sys_resource_where_conditions"/>
+        limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER} 
+    </select>
+    
+    <select id="getSysResourceCountByObj" resultType="int" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        select count(1) from sys_resource
+        <include refid="sys_resource_where_conditions"/>
+    </select>
+    
+    
+    
+    <select id="getSysResourceIdByObj" resultType="Long" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+        select       id                 
+        from sys_resource
+        <include refid="sys_resource_where_conditions"/>
+    </select>
+	
+    <select id="getSysResourceIdList" resultType="Long" parameterType="com.mlj.ecbiz.model.permission.SysResource">
+       select       id                  from sys_resource where 1=1 
+        id = #{value}
+    </select>
+    
+    <select id="getSysResourceIdListByObj" resultType="Long"  parameterType="com.mlj.ecbiz.model.permission.SysResource">
+       select       id                  from sys_resource 
+        <include refid="sys_resource_where_conditions"/>
+    </select>
+    
+    <select id="getSysResourceIdListByMap" resultType="Long"  parameterType="java.util.HashMap">
+        select       id                  from sys_resource 
+        <include refid="sys_resource_where_conditions"/>
+        limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER} 
+    </select>
+</mapper>
